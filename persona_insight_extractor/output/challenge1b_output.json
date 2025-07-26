@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "documents": [
+      "Compliance Training Manual.pdf",
+      "Corporate Contracts Guide.pdf",
+      "Risk and Audit Overview.pdf"
+    ],
+    "persona": "PhD Researcher in Computational Biology",
+    "job_to_be_done": "Prepare a literature review focusing on methodologies, datasets, and performance benchmarks",
+    "timestamp": "2025-07-26T15:48:42.983811"
+  },
+  "sections": [
+    {
+      "document": "Risk and Audit Overview.pdf",
+      "page": 1,
+      "section_title": "Risk and Audit Overview",
+      "importance_rank": 1
+    },
+    {
+      "document": "Compliance Training Manual.pdf",
+      "page": 1,
+      "section_title": "Compliance Training Manual",
+      "importance_rank": 2
+    },
+    {
+      "document": "Corporate Contracts Guide.pdf",
+      "page": 1,
+      "section_title": "Corporate Contracts Guide",
+      "importance_rank": 3
+    }
+  ],
+  "subsection_analysis": [
+    {
+      "document": "Risk and Audit Overview.pdf",
+      "page": 1,
+      "refined_text": "Risk and Audit Overview Understanding Risk Risk is a fundamental part of business. It needs to be assessed and managed effectively. Risk Mitigation Strategies 1. Risk scoring 2. Policy checks 3. Employee education 4. Risk response plans Audit Trail Requirements Proper record-keeping and periodic audits are essential.",
+      "importance_rank": 1
+    },
+    {
+      "document": "Compliance Training Manual.pdf",
+      "page": 1,
+      "refined_text": "Compliance Training Manual Welcome to Compliance Training This training manual is designed to help employees understand compliance policies. Compliance Procedures 1. Report suspicious activity 2. Mandatory training modules 3. Regular audits 4. Whistleblower protection Regulatory Overview This section covers the laws and acts that govern corporate compliance.",
+      "importance_rank": 2
+    },
+    {
+      "document": "Corporate Contracts Guide.pdf",
+      "page": 1,
+      "refined_text": "Corporate Contracts Guide Introduction to Corporate Contracts Contracts define legal obligations and rights. Key Contractual Obligations 1. Indemnity clauses 2. Governing law 3. Confidentiality agreements 4. Termination clauses Common Exceptions Force majeure and changes in law are often listed as exceptions.",
+      "importance_rank": 3
+    }
+  ]
+}
