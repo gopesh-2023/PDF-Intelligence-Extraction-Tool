@@ -75,3 +75,8 @@ semantic_outline_extractor/output/
 .env.development.local
 .env.test.local
 .env.production.local
+
+
+# Electron Js
+/GUI Agent/node_modules/
+node_modules/

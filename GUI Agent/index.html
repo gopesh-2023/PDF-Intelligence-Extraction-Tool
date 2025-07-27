@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PDF Agent</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="header">
+    <span>PDF Intelliview</span>
+    <button id="toggle-theme">🌓</button>
+  </div>
+
+  <div id="main">
+    <div id="pdf-container">
+      
+      <div id="sidebar">
+        <button class="mode-button" title="Outline Mode">🧩</button>
+        <button class="mode-button" title="Persona Mode">🧠</button>
+        <button class="mode-button" title="Semantic Mode">🌐</button>
+      </div>
+
+
+      <button id="open-pdf-btn">Open PDF File</button>
+      <iframe id="pdf-viewer" style="display: none;"></iframe>
+    </div>
+
+
+    <div id="outline-panel">
+      <div id="outline-header">
+        <h3>Outlines Preview</h3>
+        <button id="extract-outlines-btn">Extract Outlines</button>
+      </div>
+      <pre id="outline-results"></pre>
+    </div>
+  </div>
+
+  <div id="cli-terminal">
+    <textarea id="cli-output" readonly>>> CLI Ready\n</textarea>
+    <input id="cli-input" placeholder="Enter command...">
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
