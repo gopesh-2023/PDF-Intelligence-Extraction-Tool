@@ -9,6 +9,18 @@ INPUT_DIR = Path("input")
 OUTPUT_DIR = Path("output")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
+def extract_semantic_outline_from_file(pdf_path):
+    try:
+        from .utils import extract_outline
+    except ImportError as e:
+        return {"error": f"Failed to import utils: {e}"}
+    
+    try:
+        title, outline = extract_outline(pdf_path)
+        return {"title": title, "outline": outline}
+    except Exception as e:
+        return {"error": f"Failed to extract semantic outline: {str(e)}"}
+
 for pdf_path in INPUT_DIR.glob("*.pdf"):
     print(f"\n📄 Processing: {pdf_path.name}")
     start = time.time()

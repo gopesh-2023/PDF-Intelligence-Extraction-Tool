@@ -40,6 +40,80 @@ def load_persona_job():
         data = json.load(f)
     return data["persona"], data["job_to_be_done"]
 
+def extract_persona_insight_from_file(pdf_path, persona_dict):
+    try:
+        import fitz  # PyMuPDF
+    except ImportError:
+        return {"error": "PyMuPDF (fitz) is not installed. Please install it with 'pip install pymupdf'."}
+    
+    try:
+        from semantic_utils import rank_sections_by_similarity
+    except ImportError as e:
+        return {"error": f"Failed to import semantic_utils: {e}"}
+    
+    import datetime
+    import os
+    
+    persona = persona_dict["persona"]
+    job = persona_dict["job_to_be_done"]
+    combined_query = f"{persona}. Task: {job}"
+    filename = os.path.basename(pdf_path)
+    
+    try:
+        # Simple text extraction without complex heading detection
+        doc = fitz.open(pdf_path)
+        sections = []
+        
+        for page_num, page in enumerate(doc, start=1):
+            text = page.get_text()
+            if text.strip():
+                # Split text into paragraphs
+                paragraphs = [p.strip() for p in text.split('\n\n') if p.strip() and len(p.strip()) > 20]
+                
+                for i, paragraph in enumerate(paragraphs[:5]):  # Limit to 5 paragraphs per page
+                    sections.append({
+                        "title": f"Page {page_num} - Paragraph {i+1}",
+                        "text": paragraph[:500],  # Limit text length
+                        "page": page_num,
+                        "document": filename
+                    })
+        
+        if not sections:
+            return {"error": "No text content extracted from PDF."}
+            
+        # Rank sections by similarity
+        ranked = rank_sections_by_similarity(sections, combined_query)
+        
+        output = {
+            "metadata": {
+                "document": filename,
+                "persona": persona,
+                "job_to_be_done": job,
+                "timestamp": datetime.datetime.now().isoformat()
+            },
+            "sections": [],
+            "subsection_analysis": []
+        }
+        
+        for i, item in enumerate(ranked[:10]):
+            output["sections"].append({
+                "document": item["document"],
+                "page": item["page"],
+                "section_title": item["title"],
+                "importance_rank": i+1
+            })
+            output["subsection_analysis"].append({
+                "document": item["document"],
+                "page": item["page"],
+                "refined_text": item["text"],
+                "importance_rank": i+1
+            })
+        
+        return output
+        
+    except Exception as e:
+        return {"error": f"Failed to process {filename}: {str(e)}"}
+
 def main():
     if not os.path.exists(INPUT_DIR):
         print(f"[ERROR] Input folder '{INPUT_DIR}' does not exist.")
