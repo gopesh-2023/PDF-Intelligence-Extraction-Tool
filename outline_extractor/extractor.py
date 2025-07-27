@@ -46,6 +46,15 @@ def process_pdfs():
         except Exception as e:
             print(f"[ERROR] Failed to process {filename}: {e}")
 
+def extract_outline_from_file(pdf_path):
+    import fitz
+    try:
+        doc = fitz.open(pdf_path)
+        title, outline = extract_headings(doc)
+        return {"title": title, "outline": outline}
+    except Exception as e:
+        return {"error": str(e)}
+
 if __name__ == "__main__":
     try:
         import fitz
