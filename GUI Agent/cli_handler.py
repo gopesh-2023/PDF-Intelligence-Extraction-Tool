@@ -25,6 +25,7 @@ def check_api_status():
             print(f"   Outline Extractor: {health['outline_extractor']}")
             print(f"   Persona Extractor: {health['persona_extractor']}")
             print(f"   Semantic Extractor: {health['semantic_extractor']}")
+            print(f"   spaCy Multilingual: {health.get('spacy_multilingual', 'unknown')}")
             return True
         else:
             print(f"[ERROR] API Server Error: {response.status_code}")
@@ -156,11 +157,57 @@ def show_help():
   list-pdfs       - List available PDF files
   clear           - Clear the terminal display
 
+[spaCy Multilingual Commands]
+  install-spacy   - Install spaCy multilingual model
+  test-spacy      - Test spaCy installation
+
 Examples:
   status
   list-pdfs
   clear
+  install-spacy
+  test-spacy
 """)
+
+def install_spacy_model():
+    """Install spaCy multilingual model"""
+    print("[INFO] Installing spaCy multilingual model...")
+    try:
+        result = subprocess.run([
+            sys.executable, "-m", "spacy", "download", "xx_ent_wiki_sm"
+        ], capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            print("[OK] spaCy multilingual model installed successfully!")
+            print("   Model: xx_ent_wiki_sm (multilingual NER)")
+            print("   Size: ~50MB")
+            print("   Languages: 55+ languages supported")
+            return True
+        else:
+            print(f"[ERROR] Failed to install spaCy model:")
+            print(result.stderr)
+            return False
+    except Exception as e:
+        print(f"[ERROR] Error installing spaCy model: {e}")
+        return False
+
+def test_spacy_installation():
+    """Test spaCy installation"""
+    print("[INFO] Testing spaCy installation...")
+    try:
+        import spacy
+        nlp = spacy.load("xx_ent_wiki_sm")
+        
+        test_text = "Hello world! Bonjour le monde! Hola mundo!"
+        doc = nlp(test_text)
+        
+        print("[OK] spaCy is working correctly!")
+        print(f"   Model: {nlp.meta['name']}")
+        print(f"   Test tokens: {len(doc)}")
+        return True
+    except Exception as e:
+        print(f"[ERROR] spaCy test failed: {e}")
+        return False
 
 def main():
     if len(sys.argv) < 2:
@@ -180,6 +227,12 @@ def main():
     
     elif command == "clear":
         print("__CLEAR_TERMINAL__")
+    
+    elif command == "install-spacy":
+        install_spacy_model()
+    
+    elif command == "test-spacy":
+        test_spacy_installation()
     
     else:
         print(f"[ERROR] Unknown command: {command}")

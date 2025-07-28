@@ -298,6 +298,24 @@ body {
   transform: translateY(-1px);
 }
 
+#analyze-text-btn, #extract-entities-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--button-text);
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+#analyze-text-btn:hover, #extract-entities-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
 #outline-results {
   flex: 1;
   padding: 20px;

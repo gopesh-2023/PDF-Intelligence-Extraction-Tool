@@ -123,3 +123,44 @@ Copy the `pretrained_summarizer` folder to:
 - All dependencies are installable via pip and do not require online access after installation.
 
 ---
+
+## Multilingual PDF Analysis with spaCy
+
+### Overview
+This application now supports multilingual PDF analysis using spaCy's multilingual model (`xx_ent_wiki_sm`). You can extract language, named entities, key phrases, and perform text analysis on PDFs in 55+ languages directly from the GUI.
+
+### Features
+- **Language Detection:** Detects the primary language of the PDF text.
+- **Named Entity Recognition:** Extracts named entities (people, organizations, locations, etc.) from the document.
+- **Key Phrase Extraction:** Identifies important noun phrases and key terms.
+- **Text Structure Analysis:** Provides statistics such as number of sentences, tokens, and entity types.
+
+### Requirements
+- Python 3.8+
+- spaCy >=3.0
+- spaCy multilingual model (`xx_ent_wiki_sm`)
+- Compatible NumPy version (`numpy<2` recommended)
+
+### How to Use
+1. **Install Requirements:**
+   - Run `pip install -r requirements.txt`
+   - Run `python -m spacy download xx_ent_wiki_sm`
+   - If you encounter errors with NumPy 2.x, downgrade with `pip install "numpy<2"`
+2. **Start the API Server:**
+   - `python api_server.py`
+3. **Open the GUI:**
+   - Load a PDF file.
+   - Switch to the "Multilingual" mode using the mode buttons.
+   - Use the "Analyze Text" or "Extract Entities" buttons to perform multilingual analysis.
+
+### Troubleshooting
+- If you see errors related to NumPy, ensure you are using `numpy<2`.
+- Make sure the API server is running before using the GUI features.
+
+### Example Output
+- Language detected: English
+- Named Entities: ["John Doe", "New York"]
+- Key Phrases: ["machine learning", "natural language processing"]
+- Entity Types: {"PERSON": 2, "GPE": 1}
+
+---
