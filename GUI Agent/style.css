@@ -313,7 +313,7 @@ body {
 }
 
 #cli-terminal {
-  height: 120px;
+  height: 250px;
   background-color: var(--cli-bg);
   border-radius: 12px;
   margin: 8px;

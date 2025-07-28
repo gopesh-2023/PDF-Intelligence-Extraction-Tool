@@ -31,7 +31,9 @@ function createWindow() {
     }
   });
   ipcMain.on('run-command', (event, cmd) => {
-    const python = spawn('python3', ['cli_handler.py', cmd], {
+    // Split the command string into arguments (handles quoted filenames)
+    const args = cmd.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+    const python = spawn('python', ['cli_handler.py', ...args], {
         cwd: __dirname
     });
 

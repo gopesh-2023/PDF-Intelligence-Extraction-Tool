@@ -117,9 +117,27 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   window.electronAPI.onCommandResult((result) => {
-    cliOutput.value += `\n${result}`;
+    if (result.trim() === "__CLEAR_TERMINAL__") {
+      cliOutput.value = '';
+    } else {
+      cliOutput.value += `\n${result}`;
+    }
     cliOutput.scrollTop = cliOutput.scrollHeight;
   });
+
+  // Show welcome message and available commands
+  cliOutput.value = `>>> CLI Ready - Enhanced PDF Processing Terminal
+
+📋 Available Commands:
+  status          - Check API server status
+  help            - Show all available commands
+  list-pdfs       - List available PDF files
+  outline <file>  - Extract basic outline from PDF
+  persona <file>  - Extract persona-based insights
+  semantic <file> - Extract semantic outline from PDF
+
+💡 Try: help
+`;
 
   // API call functions
   async function callOutlineAPI() {
