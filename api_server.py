@@ -8,6 +8,14 @@ import json
 app = Flask(__name__)
 CORS(app)
 
+# Initialize spaCy processor
+try:
+    from spacy_multilingual_utils import initialize_spacy, get_spacy_processor
+    spacy_initialized = initialize_spacy()
+except ImportError as e:
+    print(f"[WARNING] spaCy not available: {e}")
+    spacy_initialized = False
+
 UPLOAD_FOLDER = tempfile.gettempdir()
 
 # Lazy imports to handle dependency issues
@@ -94,8 +102,80 @@ def health_check():
         'status': 'running',
         'outline_extractor': 'available' if get_outline_extractor() else 'unavailable',
         'persona_extractor': 'available' if get_persona_extractor() else 'unavailable', 
-        'semantic_extractor': 'available' if get_semantic_extractor() else 'unavailable'
+        'semantic_extractor': 'available' if get_semantic_extractor() else 'unavailable',
+        'spacy_multilingual': 'available' if spacy_initialized else 'unavailable'
     })
+
+@app.route('/api/spacy/analyze', methods=['POST'])
+def spacy_analyze():
+    """Analyze text using spaCy multilingual features"""
+    if not spacy_initialized:
+        return jsonify({'error': 'spaCy not available'}), 503
+    
+    data = request.get_json()
+    if not data or 'text' not in data:
+        return jsonify({'error': 'Text required'}), 400
+    
+    text = data['text']
+    processor = get_spacy_processor()
+    
+    try:
+        # Perform comprehensive analysis
+        analysis = processor.analyze_text_structure(text)
+        entities = processor.extract_entities(text)
+        key_phrases = processor.extract_key_phrases(text)
+        
+        result = {
+            'analysis': analysis,
+            'entities': entities,
+            'key_phrases': key_phrases,
+            'language_detected': analysis['language']
+        }
+        
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/spacy/search', methods=['POST'])
+def spacy_search():
+    """Multilingual search using spaCy"""
+    if not spacy_initialized:
+        return jsonify({'error': 'spaCy not available'}), 503
+    
+    data = request.get_json()
+    if not data or 'query' not in data or 'sections' not in data:
+        return jsonify({'error': 'Query and sections required'}), 400
+    
+    query = data['query']
+    sections = data['sections']
+    top_k = data.get('top_k', 5)
+    
+    processor = get_spacy_processor()
+    
+    try:
+        results = processor.multilingual_search(query, sections, top_k)
+        return jsonify({'results': results})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/spacy/entities', methods=['POST'])
+def spacy_entities():
+    """Extract named entities from text"""
+    if not spacy_initialized:
+        return jsonify({'error': 'spaCy not available'}), 503
+    
+    data = request.get_json()
+    if not data or 'text' not in data:
+        return jsonify({'error': 'Text required'}), 400
+    
+    text = data['text']
+    processor = get_spacy_processor()
+    
+    try:
+        entities = processor.extract_entities(text)
+        return jsonify({'entities': entities})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True) 
