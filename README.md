@@ -164,3 +164,4 @@ This application now supports multilingual PDF analysis using spaCy's multilingu
 - Entity Types: {"PERSON": 2, "GPE": 1}
 
 ---
+# PDF-Intelliview
